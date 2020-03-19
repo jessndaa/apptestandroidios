@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "487392086327",
+    "firebase_url": "https://bit-test-7b472.firebaseio.com",
+    "project_id": "bit-test-7b472",
+    "storage_bucket": "bit-test-7b472.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487392086327:android:da782a11da51b9b26232b2",
+        "android_client_info": {
+          "package_name": "com.example.testrawbank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487392086327-sre08g1i41cdnjll48fpo2e8v08o9kp0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtkWXQR4mL-QKOJsstDkhD42gGLnUZrks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487392086327-sre08g1i41cdnjll48fpo2e8v08o9kp0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
