@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:apptest/model/NewsModel.dart';
 import 'package:apptest/service/NewsService.dart';
+import 'package:apptest/states/user.state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import './dialog/info.dialog.dart';
@@ -16,19 +18,15 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
 
+  final Firestore firestore = new Firestore();
   
+  bool isInitial = true;
   @override
   void initState() {
-
-    Timer.periodic(new Duration(seconds: 6), (timer) {
-      NewsService.instance.getAllExecpt("cpp").then((news){
-        NewsStream.intance.setNews(news);
-      });
-    });
-
-
-
-
+    
+    // NewsService.instance.getAllExecpt("cpp").then((news){
+    //   NewsStream.intance.setNews(news);
+    // });
     super.initState();
   }
   
@@ -193,10 +191,11 @@ class _MainAppState extends State<MainApp> {
                    // app conten filter
                   Expanded(
                     flex: 8,
-                    child: StreamBuilder<List<NewsModel>>(
-                      stream: NewsStream.intance.newsChangedHandler$,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: firestore.collection("news")
+                        .snapshots(),
                       builder: (context, snapshot) {
-                        if (!snapshot.hasData || snapshot.data.length < 1) {
+                        if (!snapshot.hasData ) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -205,17 +204,27 @@ class _MainAppState extends State<MainApp> {
                           );
                         }
                         return ListView.builder(
-                          itemCount: snapshot.data.length,
+                          itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, i) {
-                            print("show text in time:");
-                            print(snapshot.data[i].title);
-                            return Column(
+                            print(UserState.intance.isInitial);
+                            if (!(snapshot.data.documents[i]
+                                    .data["sender"].toString() == 
+                                    UserState.intance.currentUser.pseudo)) {
+                              if (!UserState.intance.isInitial) {
+                                UserState.intance.isInitial = false;
+                                NewsStream.intance.setCount(snapshot.data.documentChanges.length);
+                              }
+                            }
+                            print(snapshot.data.documents[i].data["title"]);
+                            return snapshot.data.documents[i]
+                                    .data["sender"].toString() == 
+                                    UserState.intance.currentUser.pseudo ? Container() : Column(
                               children: <Widget>[
                                 ActualiteWidget(
-                                  title: snapshot.data[i].title,
-                                  message: snapshot.data[i].message,
-                                  sender: snapshot.data[i].sender,
-                                  dateTime: snapshot.data[i].time,
+                                  title: snapshot.data.documents[i].data["title"],
+                                  message: snapshot.data.documents[i].data["message"],
+                                  sender: snapshot.data.documents[i].data["sender"],
+                                  dateTime: snapshot.data.documents[i].data["time"],
                                 ),
                                 SizedBox(height: 35.0,)
                               ],

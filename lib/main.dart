@@ -1,6 +1,8 @@
 import 'package:apptest/model/user.model.dart';
 import 'package:apptest/service/UserService.dart';
 import 'package:apptest/states/user.state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +13,9 @@ import './main_app.dart';
 import './register.page.dart';
 import './register/welcome.page.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  runApp(MyApp());
+} 
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

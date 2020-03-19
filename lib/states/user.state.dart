@@ -11,4 +11,5 @@ class UserState {
   }
 
   UserModel currentUser;
+  bool isInitial = true;
 }

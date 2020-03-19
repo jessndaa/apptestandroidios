@@ -10,6 +10,7 @@ class NewsStream {
     }
     return _instance;
   }
+  bool isFisrtTime = true;
   BehaviorSubject<List<NewsModel>> _news$ = new BehaviorSubject.seeded([]);
   BehaviorSubject<int> _evnt$ = new BehaviorSubject.seeded(0);
   List<NewsModel> _news = [];
@@ -24,11 +25,24 @@ class NewsStream {
       _news$.add(news);
     }
   }
+
+  addNews(NewsModel news){
+    _news.add(news);
+    _news$.add(_news);
+  }
+  setCount(int val){
+    sizeNew = val;
+    _evnt$.add(sizeNew);
+  }
   resetCount(){
     sizeNew = 0;
     _evnt$.add(sizeNew);
   }
   bool isSameNot(List<NewsModel> news){
+    if (isFisrtTime) {
+      isFisrtTime = false;
+      return true;
+    }
     if (_news.length != news.length) {
       if (_news.length> news.length) {
          sizeNew = sizeNew > 1 ? sizeNew-- : 0;
